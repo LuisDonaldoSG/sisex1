@@ -267,7 +267,7 @@ const enviar = () =>{
         let respuesta = $("#pregunta"+i).val()
         arr[i].ans = respuesta
 
-        if (arr[i].ans === 'true' ){
+        if (arr[i].ans === 'si' ){
             console.log(arr[i].ans)
             for (let j = 0; j < arr[0].puntos.length; j++) {
                 let materia = arr[0].puntos[j].materia
@@ -279,6 +279,19 @@ const enviar = () =>{
             }
         }
 
+        if (arr[i].ans === 'talvez' ){
+            console.log(arr[i].ans)
+            for (let j = 0; j < arr[0].puntos.length; j++) {
+                let materia = arr[0].puntos[j].materia
+                for (let k = 0; k < arr[i].asignatures.length ; k++){
+                    if (materia === arr[i].asignatures[k]){
+                        arr[0].puntos[j].num = arr[0].puntos[j].num + 0.5
+                    }
+                }
+            }
+        }
+        
+
     }
     console.log(arr)
 }
@@ -289,7 +302,7 @@ $(document).ready(function() {
         console.log(arr[i].ques)
         $(".preguntas").append(
             '<li class="list-group-item">'+arr[i].ques+
-            '<select id = "pregunta'+i+'" name="pregunta'+i+'" class ="float-end"> <option value="true">si</option> <option value="false" selected>no</option>  </select>'+
+            '<select id = "pregunta'+i+'" name="pregunta'+i+'" class ="float-end"> <option value="si">si</option> <option value="no" selected>no</option> <option value="talvez" >tal vez</option> </select>'+
             '</li>'
         )
     }
