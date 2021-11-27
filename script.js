@@ -356,12 +356,21 @@ const llenarPlan = () => {
     console.log(especialidad)
     console.log(plan)    
     console.log(arr[0].puntos)
+
+
 }
 
 const ocultarPreguntas = () => {
     document.getElementById('preguntasCont').style.display='none'
     llenarPlan()
     document.getElementById('resultadosCont').style.display='block'
+
+    plan.map(item => (
+        $('.table tbody').append(
+            '<tr/><td>'+item.materia+'</td> <td>'+item.tipo+'</td> </tr>'
+        )
+    ))
+    
 }
 
 $(document).ready(function() {
