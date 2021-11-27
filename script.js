@@ -45,7 +45,11 @@ let arr = [
         {materia : 'Introducción a la programación', num : 0, tipo : 'Tronco comun'},
         {materia : 'Servicios y servidores', num : 0, tipo : 'Especialidades'},
         {materia : 'Arquitectura de red', num : 0, tipo : 'Especialidades'},                
-        {materia : 'Seguridad en redes', num : 0, tipo : 'Especialidades'},                
+        {materia : 'Seguridad en redes', num : 0, tipo : 'Especialidad'},
+        {materia : 'Seguridad', num : 0, tipo : 'Servicios y servidores'},
+        {materia : 'Administración de servidores', num : 0, tipo : 'Servicios y servidores'},
+        {materia : 'Administración avanzada de servicios', num : 0, tipo : 'Servicios y servidores'},
+        {materia : 'Análisis de protocolos', num : 0, tipo : 'Servicios y servidores'},
     ]},
     {
         ques: "¿Has tomado algún curso dentro o fuera del centro educativo que acredite un nivel igual o superior a B2?",
@@ -318,7 +322,8 @@ const llenarpreguntas = () => {
 
 const llenarPlan = () => {    
     arr[0].puntos.sort(function(a,b){return b.num-a.num})    
-    var especialidades = []
+    var especialidades = 0
+    var especialidad = []
     for(let i = 0; i < arr[0].puntos.length; i++) {
         let a = arr[0].puntos[i]        
         if(a.tipo === 'Formacion profesional') {
@@ -327,18 +332,30 @@ const llenarPlan = () => {
         if(a.tipo === 'Tronco comun' && a.num == 0) {
             plan.push(a)
         }
-        if(a.tipo === 'Especialidades' && !(a in especialidades)) {
-            /*especialidades.push({tipo :a.tipo, num:a.num})*/
+        if(a.tipo === 'Especialidades' && especialidad.length <= 2) {
+            for(let j = 0; j < arr[0].puntos.length; j++) {                
+                if (a.materia === arr[0].puntos[j].materia) {
+                    especialidad.push(arr[0].puntos[j].materia)                    
+                }
+            }
         }        
+    }    
+    for(let i = 0; i < especialidad.length; i++) {
+        console.log(especialidad[i])
+        for(let j = 0; j < arr[0].puntos.length; j++) {
+            if (arr[0].puntos[j].tipo === especialidad[i]) {                                
+                plan.push({materia : arr[0].puntos[j].materia, tipo : 'Especialidad'})
+            }
+        }
     }
     for(let i = 0; i < arr[0].puntos.length; i++) {
         let a = arr[0].puntos[i]        
         if(a.tipo === 'Optativas' && plan.length < 30) {
             plan.push(a)
         }       
-    }    
-    console.log(plan)
-    console.log(especialidades)
+    }
+    console.log(especialidad)
+    console.log(plan)    
 }
 
 const ocultarPreguntas = () => {
