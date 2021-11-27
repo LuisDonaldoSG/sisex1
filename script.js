@@ -45,7 +45,7 @@ let arr = [
         {materia : 'Introducción a la programación', num : 0, tipo : 'Tronco comun'},
         {materia : 'Servicios y servidores', num : 0, tipo : 'Especialidades'},
         {materia : 'Arquitectura de red', num : 0, tipo : 'Especialidades'},                
-        {materia : 'Seguridad en redes', num : 0, tipo : 'Especialidad'},
+        {materia : 'Seguridad en redes', num : 0, tipo : 'Especialidades'},
         {materia : 'Seguridad', num : 0, tipo : 'Servicios y servidores'},
         {materia : 'Administración de servidores', num : 0, tipo : 'Servicios y servidores'},
         {materia : 'Administración avanzada de servicios', num : 0, tipo : 'Servicios y servidores'},
@@ -332,7 +332,7 @@ const llenarPlan = () => {
         if(a.tipo === 'Tronco comun' && a.num == 0) {
             plan.push(a)
         }
-        if(a.tipo === 'Especialidades' && especialidad.length <= 2) {
+        if(a.tipo === 'Especialidades' && especialidad.length <= 1) {
             for(let j = 0; j < arr[0].puntos.length; j++) {                
                 if (a.materia === arr[0].puntos[j].materia) {
                     especialidad.push(arr[0].puntos[j].materia)                    
@@ -340,8 +340,7 @@ const llenarPlan = () => {
             }
         }        
     }    
-    for(let i = 0; i < especialidad.length; i++) {
-        console.log(especialidad[i])
+    for(let i = 0; i < especialidad.length; i++) {        
         for(let j = 0; j < arr[0].puntos.length; j++) {
             if (arr[0].puntos[j].tipo === especialidad[i]) {                                
                 plan.push({materia : arr[0].puntos[j].materia, tipo : 'Especialidad'})
@@ -356,6 +355,7 @@ const llenarPlan = () => {
     }
     console.log(especialidad)
     console.log(plan)    
+    console.log(arr[0].puntos)
 }
 
 const ocultarPreguntas = () => {
