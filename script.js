@@ -38,11 +38,14 @@ let arr = [
         {materia : 'Ingeniería de software II', num : 0, tipo : 'Optativas'},
         {materia : 'Computación básica', num : 0, tipo : 'Tronco comun'},
         {materia : 'Habilidades de pensamiento crítico y creativo', num : 0, tipo : 'Tronco comun'},
-        {materia : 'Ingles I', num : 0, tipo : 'Tronco comun'},
-        {materia : 'Ingles II', num : 0, tipo : 'Tronco comun'},
+        {materia : 'Inglés I', num : 0, tipo : 'Tronco comun'},
+        {materia : 'Inglés II', num : 0, tipo : 'Tronco comun'},
         {materia : 'Fundamentos de matemáticas', num : 0, tipo : 'Tronco comun'},
         {materia : 'Matemáticas discretas', num : 0, tipo : 'Tronco comun'},
         {materia : 'Introducción a la programación', num : 0, tipo : 'Tronco comun'},
+        {materia : 'Servicios y servidores', num : 0, tipo : 'Especialidades'},
+        {materia : 'Arquitectura de red', num : 0, tipo : 'Especialidades'},                
+        {materia : 'Seguridad en redes', num : 0, tipo : 'Especialidades'},                
     ]},
     {
         ques: "¿Has tomado algún curso dentro o fuera del centro educativo que acredite un nivel igual o superior a B2?",
@@ -264,6 +267,8 @@ let arr = [
     }
 ]
 
+var preguntas = "";
+var plan = [];
 
 const cambiar = (asn, pos) => {
     console.log(asn, pos)
@@ -276,8 +281,7 @@ const enviar = () =>{
         let respuesta = $("#pregunta"+i).val()
         arr[i].ans = respuesta
 
-        if (arr[i].ans === 'si' ){
-            console.log(arr[i].ans)
+        if (arr[i].ans === 'si' ){            
             for (let j = 0; j < arr[0].puntos.length; j++) {
                 let materia = arr[0].puntos[j].materia
                 for (let k = 0; k < arr[i].asignatures.length ; k++){
@@ -288,8 +292,7 @@ const enviar = () =>{
             }
         }
 
-        if (arr[i].ans === 'talvez' ){
-            console.log(arr[i].ans)
+        if (arr[i].ans === 'talvez' ){            
             for (let j = 0; j < arr[0].puntos.length; j++) {
                 let materia = arr[0].puntos[j].materia
                 for (let k = 0; k < arr[i].asignatures.length ; k++){
@@ -298,21 +301,53 @@ const enviar = () =>{
                     }
                 }
             }
-        }
-        
-
+        }        
     }
-    console.log(arr)    
+    ocultarPreguntas()    
 }
 
-$(document).ready(function() {
-
-    for (let i = 1; i < arr.length; i++) {
-        console.log(arr[i].ques)
+const llenarpreguntas = () => {
+    for (let i = 1; i < arr.length; i++) {        
         $(".preguntas").append(
-            '<li class="list-group-item">'+arr[i].ques+
+            '<li class="list-group-item mb-2">'+arr[i].ques+
             '<select id = "pregunta'+i+'" name="pregunta'+i+'" class ="float-end"> <option value="si">si</option> <option value="no" selected>no</option> <option value="talvez" >tal vez</option> </select>'+
             '</li>'
         )
     }
+}
+
+const llenarPlan = () => {    
+    arr[0].puntos.sort(function(a,b){return b.num-a.num})    
+    var especialidades = []
+    for(let i = 0; i < arr[0].puntos.length; i++) {
+        let a = arr[0].puntos[i]        
+        if(a.tipo === 'Formacion profesional') {
+            plan.push(a)
+        }
+        if(a.tipo === 'Tronco comun' && a.num == 0) {
+            plan.push(a)
+        }
+        if(a.tipo === 'Especialidades' && !(a in especialidades)) {
+            /*especialidades.push({tipo :a.tipo, num:a.num})*/
+        }        
+    }
+    for(let i = 0; i < arr[0].puntos.length; i++) {
+        let a = arr[0].puntos[i]        
+        if(a.tipo === 'Optativas' && plan.length < 30) {
+            plan.push(a)
+        }       
+    }    
+    console.log(plan)
+    console.log(especialidades)
+}
+
+const ocultarPreguntas = () => {
+    document.getElementById('preguntasCont').style.display='none'
+    llenarPlan()
+    document.getElementById('resultadosCont').style.display='block'
+}
+
+$(document).ready(function() {
+    llenarpreguntas()
+    document.getElementById('resultadosCont').style.display='none'
 })
